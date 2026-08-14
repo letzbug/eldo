@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0c10" />
+  <title>Eldoradio Event Jukebox</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-main">eldoradio</div>
+        <div class="brand-sub">rock · pop · retro</div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button class="nav-item" data-view="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item active" data-view="campaign">▣ <span>Kampagnen</span></button>
+        <button class="nav-item" data-view="audio">♫ <span>Songs & Audio</span></button>
+        <button class="nav-item" data-view="lights">✦ <span>Lightshows</span></button>
+        <button class="nav-item" data-view="prizes">🎁 <span>Gewinne</span></button>
+        <button class="nav-item" data-view="stats">▥ <span>Statistiken</span></button>
+        <button class="nav-item" data-view="system">▰ <span>System</span></button>
+      </nav>
+
+      <div class="jukebox-card">
+        <div class="jukebox-visual" aria-label="Jukebox illustration">
+          <div class="jukebox-arch"></div>
+          <div class="jukebox-screen">ELDORADIO</div>
+          <div class="jukebox-speaker"></div>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-row"><span>JUKEBOX STATUS</span><span class="dot"></span></div>
+        <strong>ONLINE</strong>
+        <p>Demo-Modus · Browser</p>
+        <div class="divider"></div>
+        <p id="storageLabel">Lokaler Speicher aktiv</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Kampagne bearbeiten</div>
+          <h1 id="campaignTitle">Eldoradio Summer Tour 2026</h1>
+        </div>
+        <div class="top-actions">
+          <button class="btn secondary" id="previewBtn">◉ Vorschau</button>
+          <button class="btn primary" id="saveBtn">↓ Lokal speichern</button>
+          <button class="btn secondary" id="exportBtn">⇩ Export USB</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-campaign">
+        <div class="cards three">
+          <article class="panel">
+            <h2>Kampagnen Infos</h2>
+            <label>Name<input id="campaignName" value="Eldoradio Summer Tour 2026"></label>
+            <label>Beschreibung<input id="campaignDescription" value="Summer Tour 2026 – Events & Festivals"></label>
+            <div class="grid2">
+              <label>Gültig von<input id="validFrom" type="date" value="2026-06-01"></label>
+              <label>Gültig bis<input id="validTo" type="date" value="2026-08-31"></label>
+            </div>
+            <label>Event-Notiz<textarea id="campaignNote" rows="3">Demo für Eldoradio Luxemburg</textarea></label>
+          </article>
+
+          <article class="panel prize-settings">
+            <h2>Gewinn-Einstellungen</h2>
+            <div class="probability-wrap">
+              <div class="probability-ring"><span id="chanceBig">20%</span><small>Gewinnchance</small></div>
+              <div class="settings-list">
+                <label>Gewinnchance <div class="inline"><input id="winChance" type="range" min="0" max="100" value="20"><span id="chanceValue">20 %</span></div></label>
+                <label>Max. Gewinne gesamt<input id="maxWins" type="number" min="0" value="50"></label>
+                <label>Hauptgewinne<input id="maxJackpots" type="number" min="0" value="3"></label>
+                <label>Mindestabstand Hauptgewinn<input id="jackpotGap" type="number" min="0" value="5"></label>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel stats-mini">
+            <h2>Statistik (diese Kampagne)</h2>
+            <div class="statline"><span>◈ Spiele gesamt</span><strong id="statGames">1.284</strong></div>
+            <div class="statline"><span>♫ Songs gespielt</span><strong id="statSongs">1.237</strong></div>
+            <div class="statline"><span>🎁 Gewinne gesamt</span><strong id="statWins">47</strong></div>
+            <div class="statline"><span>♛ Jackpots</span><strong id="statJackpots">2</strong></div>
+            <div class="statline"><span>◷ Letztes Spiel</span><strong id="statLast">vor 2 Minuten</strong></div>
+            <button class="btn wide" data-navtarget="stats">Detaillierte Statistiken</button>
+          </article>
+        </div>
+
+        <div class="workspace">
+          <article class="panel matrix-panel">
+            <div class="panel-heading">
+              <h2>Tastenbelegung</h2>
+              <div class="legend"><span class="song">♫ Song</span><span class="win">🎁 Gewinn</span><span class="lose">× Niete</span><span class="random">◈ Zufall</span></div>
+            </div>
+            <div class="matrix-tools">
+              <button class="btn small" id="randomizeBtn">⟳ Zufallsverteilung</button>
+              <button class="btn small" id="clearMatrixBtn">× Matrix leeren</button>
+            </div>
+            <div class="matrix-scroll"><div id="matrix" class="matrix"></div></div>
+          </article>
+
+          <aside class="panel assign-panel">
+            <h2>Inhalte zuweisen</h2>
+            <div class="tabs">
+              <button class="tab active" data-tab="songs">Songs</button>
+              <button class="tab" data-tab="prizes">Gewinne</button>
+              <button class="tab" data-tab="jingles">Niete & Jingles</button>
+            </div>
+            <div class="tab-content active" id="tab-songs">
+              <button class="btn wide" id="uploadAudioBtn">＋ Audio hinzufügen</button>
+              <input id="audioFileInput" type="file" accept="audio/*" multiple hidden>
+              <input class="search" id="songSearch" placeholder="Suchen…">
+              <div id="songList" class="asset-list"></div>
+            </div>
+            <div class="tab-content" id="tab-prizes"><div id="prizeList" class="asset-list"></div></div>
+            <div class="tab-content" id="tab-jingles"><div id="jingleList" class="asset-list"></div></div>
+            <div class="selected-box">
+              <span>Ausgewählt</span>
+              <strong id="selectedKey">Keine Taste</strong>
+              <small id="selectedContent">Klicke zuerst eine Taste in der Matrix an.</small>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-dashboard">
+        <div class="hero panel">
+          <div><span class="eyebrow">EVENT JUKEBOX</span><h2>Bereit für den nächsten Einsatz.</h2><p>Diese Demo läuft vollständig clientseitig und speichert alles lokal im Browser.</p></div>
+          <button class="btn primary" id="heroPreviewBtn">Demo starten</button>
+        </div>
+        <div class="cards three dashboard-cards">
+          <article class="panel"><h2>Kampagne</h2><div class="big-number" id="dashCampaign">Summer Tour 2026</div><p>Aktive Konfiguration</p></article>
+          <article class="panel"><h2>Heute gespielt</h2><div class="big-number" id="dashGames">1.284</div><p>Interaktionen insgesamt</p></article>
+          <article class="panel"><h2>Gewinne</h2><div class="big-number" id="dashWins">47</div><p>Davon 2 Jackpots</p></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-audio">
+        <article class="panel page-panel"><div class="panel-heading"><div><h2>Songs & Audio</h2><p>MP3/WAV-Dateien werden in dieser Demo lokal im Browser gespeichert.</p></div><button class="btn primary" id="audioPageUpload">＋ Dateien hinzufügen</button></div><div id="audioPageList" class="table-list"></div></article>
+      </section>
+
+      <section class="view" id="view-lights">
+        <article class="panel page-panel"><h2>Lightshows</h2><p>Die echte DMX-Anbindung kommt später. Für die Präsentation sind bereits Show-Presets vorbereitet.</p><div id="lightShowGrid" class="show-grid"></div></article>
+      </section>
+
+      <section class="view" id="view-prizes">
+        <article class="panel page-panel"><div class="panel-heading"><div><h2>Gewinne</h2><p>Gewinne und Limits für die Kampagne.</p></div><button class="btn primary" id="addPrizeBtn">＋ Gewinn hinzufügen</button></div><div id="prizesPageList" class="table-list"></div></article>
+      </section>
+
+      <section class="view" id="view-stats">
+        <article class="panel page-panel"><div class="panel-heading"><div><h2>Statistiken</h2><p>Live-Daten aus dem Demo-Spielmodus.</p></div><button class="btn" id="resetStatsBtn">Statistik zurücksetzen</button></div><div class="stats-grid" id="statsGrid"></div><div class="chart-wrap"><div id="keyChart" class="bar-chart"></div></div></article>
+      </section>
+
+      <section class="view" id="view-system">
+        <article class="panel page-panel"><h2>System</h2><div class="system-grid"><div><span>Modus</span><strong>GitHub Pages Demo</strong></div><div><span>Speicherung</span><strong>localStorage + IndexedDB</strong></div><div><span>Netzwerk</span><strong>Nicht erforderlich</strong></div><div><span>DMX</span><strong>Mock-Schnittstelle vorbereitet</strong></div><div><span>Version</span><strong>1.0.0-demo</strong></div><div><span>Jukebox</span><strong>ELDO-JUKEBOX-01</strong></div></div><div class="system-actions"><button class="btn" id="importBtn">⇧ Konfiguration importieren</button><input id="importInput" type="file" accept="application/json" hidden><button class="btn danger" id="factoryResetBtn">Werkseinstellungen Demo</button></div></article>
+      </section>
+
+      <footer class="footer"><span>Jukebox Name: <strong>ELDO-JUKEBOX-01</strong></span><span>IP: <strong>offline / lokal</strong></span><span>Version: <strong>1.0.0-demo</strong></span><span class="spacer"></span><button class="text-btn" id="duplicateBtn">Kampagne duplizieren</button></footer>
+    </main>
+  </div>
+
+  <div class="modal" id="previewModal" aria-hidden="true">
+    <div class="preview-stage">
+      <button class="close" id="closePreview">×</button>
+      <div class="preview-brand">eldoradio</div>
+      <div class="preview-jukebox">
+        <div class="pulse-ring"></div>
+        <div class="preview-copy">
+          <span id="previewKicker">WÄHL DEINEN SONG</span>
+          <strong id="previewResult">DRÜCKE EINE TASTE</strong>
+          <small id="previewSub">A1 – K10 oder direkt unten anklicken</small>
+        </div>
+      </div>
+      <div id="previewKeys" class="preview-keys"></div>
+      <div class="light-strip" id="lightStrip"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
